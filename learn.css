@@ -1,5 +1,13 @@
 /* Learn Page Specific Styles */
 
+/* Override body styles for learn page */
+body {
+    display: block !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+    overflow-x: hidden;
+}
+
 .nav-bar {
     position: fixed;
     top: 0;
