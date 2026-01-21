@@ -37,9 +37,9 @@ let progressInterval;
 
 const phases = [
     { name: 'Inhale', duration: 4000, class: 'inhale', text: 'Breathe In' },
-    { name: 'Hold', duration: 4000, class: 'hold', text: 'Hold' },
+    { name: 'Hold', duration: 4000, class: 'hold first', text: 'Hold' },
     { name: 'Exhale', duration: 4000, class: 'exhale', text: 'Breathe Out' },
-    { name: 'Hold', duration: 4000, class: 'hold', text: 'Hold' }
+    { name: 'Hold', duration: 4000, class: 'hold second', text: 'Hold' }
 ];
 
 // Session Selection
