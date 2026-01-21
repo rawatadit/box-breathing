@@ -12,34 +12,84 @@
             <a href="learn.html" class="learn-link">Learn More About Box Breathing</a>
         </div>
 
-        <h1 class="title">Box Breathing</h1>
-        <p class="subtitle">Find your calm</p>
+        <!-- Session Selection Screen -->
+        <div id="sessionSelection" class="session-selection">
+            <h1 class="title">Box Breathing</h1>
+            <p class="subtitle">Choose your breathing session</p>
 
-        <div class="breathing-container">
-            <div class="circle-container">
-                <div class="circle"></div>
-                <div class="inner-circle"></div>
+            <div class="session-grid">
+                <div class="session-card" data-session="quick">
+                    <div class="session-icon">⚡</div>
+                    <h3 class="session-title">Quick Calm</h3>
+                    <div class="session-details">
+                        <span class="session-duration">2 minutes</span>
+                        <span class="session-cycles">7 cycles</span>
+                    </div>
+                    <p class="session-description">Perfect for a quick reset</p>
+                </div>
+
+                <div class="session-card" data-session="deep">
+                    <div class="session-icon">🧘</div>
+                    <h3 class="session-title">Deep Relaxation</h3>
+                    <div class="session-details">
+                        <span class="session-duration">5 minutes</span>
+                        <span class="session-cycles">18 cycles</span>
+                    </div>
+                    <p class="session-description">Wind down and release tension</p>
+                </div>
+
+                <div class="session-card" data-session="focus">
+                    <div class="session-icon">🎯</div>
+                    <h3 class="session-title">Focus Session</h3>
+                    <div class="session-details">
+                        <span class="session-duration">3 minutes</span>
+                        <span class="session-cycles">11 cycles</span>
+                    </div>
+                    <p class="session-description">Sharpen your mind</p>
+                </div>
+
+                <div class="session-card" data-session="custom">
+                    <div class="session-icon">⚙️</div>
+                    <h3 class="session-title">Custom</h3>
+                    <div class="session-details">
+                        <span class="session-duration">Set your own</span>
+                        <span class="session-cycles">Your pace</span>
+                    </div>
+                    <p class="session-description">Personalize your practice</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Breathing Interface -->
+        <div id="breathingInterface" class="breathing-interface" style="display: none;">
+            <h1 class="title">Box Breathing</h1>
+            <p class="subtitle">Find your calm</p>
+
+            <div class="breathing-container">
+                <svg class="progress-ring" viewBox="0 0 300 300">
+                    <circle class="progress-ring-bg" cx="150" cy="150" r="140" />
+                    <circle class="progress-ring-fill" cx="150" cy="150" r="140" id="progressCircle" />
+                </svg>
+
+                <div class="circle-container">
+                    <div class="circle"></div>
+                    <div class="inner-circle"></div>
+                </div>
+
+                <div class="instruction-text" id="instruction">Get Ready</div>
+                <div class="timer-text" id="timer">4</div>
             </div>
 
-            <div class="instruction-text" id="instruction">Click Start to Begin</div>
-            <div class="timer-text" id="timer">4</div>
-        </div>
+            <div class="progress-info">
+                <span id="cycleProgress">Cycle 0 of 0</span>
+                <span id="timeProgress">0:00 / 0:00</span>
+            </div>
 
-        <div class="controls">
-            <button id="startBtn" class="btn btn-start">Start</button>
-            <button id="pauseBtn" class="btn btn-pause" style="display: none;">Pause</button>
-            <button id="resetBtn" class="btn btn-reset">Reset</button>
-        </div>
-
-        <div class="info">
-            <h3>How it works</h3>
-            <p>Box breathing is a simple relaxation technique:</p>
-            <ul>
-                <li><strong>Inhale</strong> for 4 seconds</li>
-                <li><strong>Hold</strong> for 4 seconds</li>
-                <li><strong>Exhale</strong> for 4 seconds</li>
-                <li><strong>Hold</strong> for 4 seconds</li>
-            </ul>
+            <div class="controls">
+                <button id="startBtn" class="btn btn-start">Start</button>
+                <button id="pauseBtn" class="btn btn-pause" style="display: none;">Pause</button>
+                <button id="resetBtn" class="btn btn-reset">Back to Sessions</button>
+            </div>
         </div>
     </div>
 

@@ -292,9 +292,197 @@ body {
     font-size: 1.5rem;
 }
 
+/* Session Selection Styles */
+.session-selection {
+    animation: fadeIn 0.5s ease;
+}
+
+.session-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 700px;
+    margin: 3rem auto 0;
+}
+
+.session-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.session-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(132, 250, 176, 0.1), rgba(143, 211, 244, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.session-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(132, 250, 176, 0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.session-card:hover::before {
+    opacity: 1;
+}
+
+.session-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.session-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    color: #84fab0;
+    position: relative;
+}
+
+.session-details {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+    position: relative;
+}
+
+.session-duration,
+.session-cycles {
+    padding: 0.25rem 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.session-description {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    line-height: 1.4;
+    position: relative;
+}
+
+/* Breathing Interface Styles */
+.breathing-interface {
+    animation: fadeIn 0.5s ease;
+}
+
+/* Progress Ring */
+.progress-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    pointer-events: none;
+}
+
+.progress-ring-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 4;
+}
+
+.progress-ring-fill {
+    fill: none;
+    stroke: #84fab0;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 880;
+    stroke-dashoffset: 880;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    transition: stroke-dashoffset 0.3s ease;
+    filter: drop-shadow(0 0 8px rgba(132, 250, 176, 0.6));
+}
+
+/* Progress Info */
+.progress-info {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.progress-info span {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease forwards;
+}
+
 @media (max-width: 768px) {
     .title {
         font-size: 2rem;
+    }
+
+    .session-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        gap: 1rem;
+    }
+
+    .session-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .session-icon {
+        font-size: 2.5rem;
+    }
+
+    .progress-ring {
+        width: 250px;
+        height: 250px;
+    }
+
+    .progress-info {
+        flex-direction: column;
+        gap: 0.5rem;
     }
 
     .circle-container {
