@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Breathing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Box Breathing</h1>
+        <p class="subtitle">Find your calm</p>
+
+        <div class="breathing-container">
+            <div class="circle-container">
+                <div class="circle"></div>
+                <div class="inner-circle"></div>
+            </div>
+
+            <div class="instruction-text" id="instruction">Click Start to Begin</div>
+            <div class="timer-text" id="timer">4</div>
+        </div>
+
+        <div class="controls">
+            <button id="startBtn" class="btn btn-start">Start</button>
+            <button id="pauseBtn" class="btn btn-pause" style="display: none;">Pause</button>
+            <button id="resetBtn" class="btn btn-reset">Reset</button>
+        </div>
+
+        <div class="info">
+            <h3>How it works</h3>
+            <p>Box breathing is a simple relaxation technique:</p>
+            <ul>
+                <li><strong>Inhale</strong> for 4 seconds</li>
+                <li><strong>Hold</strong> for 4 seconds</li>
+                <li><strong>Exhale</strong> for 4 seconds</li>
+                <li><strong>Hold</strong> for 4 seconds</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
