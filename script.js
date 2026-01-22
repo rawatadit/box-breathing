@@ -58,7 +58,6 @@ function updateAudioButton() {
 updateAudioButton();
 
 const circle = document.querySelector('.circle');
-const innerCircle = document.querySelector('.inner-circle');
 const boxTracer = document.querySelector('.box-tracer');
 const instructionText = document.getElementById('instruction');
 const timerText = document.getElementById('timer');
@@ -181,12 +180,10 @@ function pauseBreathing() {
         clearInterval(progressInterval);
         pauseBtn.textContent = 'Resume';
         circle.style.animationPlayState = 'paused';
-        innerCircle.style.animationPlayState = 'paused';
         boxTracer.style.animationPlayState = 'paused';
     } else {
         pauseBtn.textContent = 'Pause';
         circle.style.animationPlayState = 'running';
-        innerCircle.style.animationPlayState = 'running';
         boxTracer.style.animationPlayState = 'running';
         progressInterval = setInterval(updateProgress, 100);
         continuePhase();
@@ -204,7 +201,6 @@ function resetBreathing() {
     clearInterval(progressInterval);
 
     circle.className = 'circle';
-    innerCircle.className = 'inner-circle';
     boxTracer.className = 'box-tracer';
     boxTracer.style.animationPlayState = '';
     instructionText.textContent = 'Get Ready';
@@ -233,13 +229,11 @@ function runPhase() {
 
     // Remove previous classes
     circle.className = 'circle';
-    innerCircle.className = 'inner-circle';
     boxTracer.className = 'box-tracer';
 
     // Add current phase class
     setTimeout(() => {
         circle.classList.add(phase.class);
-        innerCircle.classList.add(phase.class);
         boxTracer.classList.add('active', phase.tracerClass);
     }, 50);
 
@@ -282,7 +276,6 @@ function continuePhase() {
 
     // Resume animations
     circle.style.animationPlayState = 'running';
-    innerCircle.style.animationPlayState = 'running';
 
     // Continue countdown
     let timeLeft = currentTime;
@@ -362,7 +355,6 @@ function completeSession() {
     pauseBtn.style.display = 'none';
 
     circle.className = 'circle';
-    innerCircle.className = 'inner-circle';
     boxTracer.className = 'box-tracer';
 }
 

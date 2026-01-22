@@ -4,6 +4,13 @@
     box-sizing: border-box;
 }
 
+:root {
+    --accent: rgba(180, 220, 255, 0.8);
+    --accent-solid: rgb(180, 220, 255);
+    --glow: rgba(180, 220, 255, 0.3);
+    --glow-strong: rgba(180, 220, 255, 0.5);
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -38,8 +45,8 @@ body {
 }
 
 .learn-link:hover {
-    background: rgba(132, 250, 176, 0.3);
-    border-color: rgba(132, 250, 176, 0.5);
+    background: var(--glow);
+    border-color: var(--glow-strong);
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
@@ -58,8 +65,7 @@ body {
 
 .breathing-container {
     position: relative;
-    margin: 3rem auto;
-    height: 400px;
+    margin: 2rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -68,361 +74,150 @@ body {
 
 .circle-container {
     position: relative;
-    width: 250px;
-    height: 250px;
+    width: min(70vmin, 350px);
+    height: min(70vmin, 350px);
 }
 
 .circle {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 180px;
-    height: 180px;
-    border-radius: 0;
-    background: rgba(132, 250, 176, 0.05);
-    border: 2px solid rgba(132, 250, 176, 0.6);
-    box-shadow: 0 0 40px rgba(132, 250, 176, 0.2),
-                inset 0 0 40px rgba(132, 250, 176, 0.05);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    background: rgba(180, 220, 255, 0.03);
+    border: 3px solid var(--accent);
+    box-shadow: 0 0 30px var(--glow),
+                inset 0 0 30px rgba(180, 220, 255, 0.03);
     transition: all 0.5s ease;
-}
-
-.circle::before,
-.circle::after {
-    content: '';
-    position: absolute;
-    background: #84fab0;
-    box-shadow: 0 0 15px rgba(132, 250, 176, 0.8);
-}
-
-/* Top border */
-.circle::before {
-    top: -3px;
-    left: -3px;
-    height: 3px;
-    width: 0;
-}
-
-/* Right border */
-.circle::after {
-    top: -3px;
-    right: -3px;
-    width: 3px;
-    height: 0;
-}
-
-.inner-circle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 110px;
-    height: 110px;
-    border-radius: 0;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    transition: all 0.5s ease;
-}
-
-.inner-circle::before,
-.inner-circle::after {
-    content: '';
-    position: absolute;
-    background: #84fab0;
-    box-shadow: 0 0 15px rgba(132, 250, 176, 0.8);
-}
-
-/* Bottom border */
-.inner-circle::before {
-    bottom: -3px;
-    right: -3px;
-    height: 3px;
-    width: 0;
-}
-
-/* Left border */
-.inner-circle::after {
-    bottom: -3px;
-    left: -3px;
-    width: 3px;
-    height: 0;
 }
 
 /* Box Tracer - glowing dot that follows the breathing box edges */
 .box-tracer {
     position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #84fab0;
+    width: 14px;
+    height: 14px;
+    background: var(--accent-solid);
     border-radius: 50%;
-    box-shadow: 0 0 20px #84fab0, 0 0 40px #84fab0, 0 0 60px rgba(132, 250, 176, 0.5);
+    box-shadow: 0 0 15px var(--accent-solid), 0 0 30px var(--accent);
     opacity: 0;
     transition: opacity 0.3s;
     z-index: 5;
     pointer-events: none;
+    /* Center the tracer dot on the edge */
+    margin-left: -7px;
+    margin-top: -7px;
 }
 
 .box-tracer.active {
     opacity: 1;
 }
 
-/* Tracer animation for Inhale (top edge, left to right) */
+/* Tracer animations - traces actual box edges */
 .box-tracer.trace-top {
     animation: tracerTop 4s linear forwards;
 }
 
-/* Tracer animation for Hold 1 (right edge, top to bottom) */
 .box-tracer.trace-right {
     animation: tracerRight 4s linear forwards;
 }
 
-/* Tracer animation for Exhale (bottom edge, right to left) */
 .box-tracer.trace-bottom {
     animation: tracerBottom 4s linear forwards;
 }
 
-/* Tracer animation for Hold 2 (left edge, bottom to top) */
 .box-tracer.trace-left {
     animation: tracerLeft 4s linear forwards;
 }
 
 @keyframes tracerTop {
     0% {
-        top: 35px;
-        left: 35px;
+        top: 0;
+        left: 0;
     }
     100% {
-        top: 35px;
-        left: calc(100% - 47px);
+        top: 0;
+        left: 100%;
     }
 }
 
 @keyframes tracerRight {
     0% {
-        top: 35px;
-        left: calc(100% - 47px);
+        top: 0;
+        left: 100%;
     }
     100% {
-        top: calc(100% - 47px);
-        left: calc(100% - 47px);
+        top: 100%;
+        left: 100%;
     }
 }
 
 @keyframes tracerBottom {
     0% {
-        top: calc(100% - 47px);
-        left: calc(100% - 47px);
+        top: 100%;
+        left: 100%;
     }
     100% {
-        top: calc(100% - 47px);
-        left: 35px;
+        top: 100%;
+        left: 0;
     }
 }
 
 @keyframes tracerLeft {
     0% {
-        top: calc(100% - 47px);
-        left: 35px;
+        top: 100%;
+        left: 0;
     }
     100% {
-        top: 35px;
-        left: 35px;
+        top: 0;
+        left: 0;
     }
 }
 
 /* Animation states */
 .circle.inhale {
-    animation: inhale 4s ease-in-out;
+    animation: inhale 4s ease-in-out forwards;
 }
 
 .circle.hold {
-    animation: hold 4s ease-in-out;
+    animation: hold 4s ease-in-out forwards;
 }
 
 .circle.exhale {
-    animation: exhale 4s ease-in-out;
-}
-
-.inner-circle.inhale {
-    animation: innerInhale 4s ease-in-out;
-}
-
-.inner-circle.hold {
-    animation: innerHold 4s ease-in-out;
-}
-
-.inner-circle.exhale {
-    animation: innerExhale 4s ease-in-out;
-}
-
-/* Border tracing states - Inhale (top border) */
-.circle.inhale::before {
-    animation: traceTop 4s ease-in-out;
-}
-
-.circle.inhale::after,
-.inner-circle.inhale::before,
-.inner-circle.inhale::after {
-    width: 0;
-    height: 0;
-}
-
-/* Border tracing states - First Hold (right border) */
-.circle.hold.first::after {
-    animation: traceRight 4s ease-in-out;
-}
-
-.circle.hold.first::before {
-    width: calc(100% + 6px);
-}
-
-.inner-circle.hold.first::before,
-.inner-circle.hold.first::after {
-    width: 0;
-    height: 0;
-}
-
-/* Border tracing states - Exhale (bottom border) */
-.inner-circle.exhale::before {
-    animation: traceBottom 4s ease-in-out;
-}
-
-.circle.exhale::before {
-    width: calc(100% + 6px);
-}
-
-.circle.exhale::after {
-    height: calc(100% + 6px);
-}
-
-.inner-circle.exhale::after {
-    width: 0;
-    height: 0;
-}
-
-/* Border tracing states - Second Hold (left border) */
-.inner-circle.hold.second::after {
-    animation: traceLeft 4s ease-in-out;
-}
-
-.circle.hold.second::before {
-    width: calc(100% + 6px);
-}
-
-.circle.hold.second::after {
-    height: calc(100% + 6px);
-}
-
-.inner-circle.hold.second::before {
-    width: calc(100% + 6px);
+    animation: exhale 4s ease-in-out forwards;
 }
 
 @keyframes inhale {
     0% {
-        transform: translate(-50%, -50%) scale(1);
-        box-shadow: 0 0 20px rgba(132, 250, 176, 0.3);
-        border-color: rgba(132, 250, 176, 0.4);
+        transform: scale(1);
+        box-shadow: 0 0 20px var(--glow);
+        border-color: rgba(180, 220, 255, 0.5);
     }
     100% {
-        transform: translate(-50%, -50%) scale(1.15);
-        box-shadow: 0 0 50px rgba(132, 250, 176, 0.7);
-        border-color: rgba(132, 250, 176, 0.9);
+        transform: scale(1.08);
+        box-shadow: 0 0 40px var(--glow-strong);
+        border-color: var(--accent);
     }
 }
 
 @keyframes hold {
     0%, 100% {
-        transform: translate(-50%, -50%) scale(1.15);
-        box-shadow: 0 0 50px rgba(132, 250, 176, 0.7);
-        border-color: rgba(132, 250, 176, 0.9);
+        transform: scale(1.08);
+        box-shadow: 0 0 40px var(--glow-strong);
+        border-color: var(--accent);
     }
 }
 
 @keyframes exhale {
     0% {
-        transform: translate(-50%, -50%) scale(1.15);
-        box-shadow: 0 0 50px rgba(132, 250, 176, 0.7);
-        border-color: rgba(132, 250, 176, 0.9);
+        transform: scale(1.08);
+        box-shadow: 0 0 40px var(--glow-strong);
+        border-color: var(--accent);
     }
     100% {
-        transform: translate(-50%, -50%) scale(1);
-        box-shadow: 0 0 20px rgba(132, 250, 176, 0.3);
-        border-color: rgba(132, 250, 176, 0.4);
-    }
-}
-
-@keyframes innerInhale {
-    0% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.8;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(1.2);
-        opacity: 1;
-        box-shadow: 0 8px 32px rgba(132, 250, 176, 0.2);
-    }
-}
-
-@keyframes innerHold {
-    0%, 100% {
-        transform: translate(-50%, -50%) scale(1.2);
-        opacity: 1;
-        box-shadow: 0 8px 32px rgba(132, 250, 176, 0.2);
-    }
-}
-
-@keyframes innerExhale {
-    0% {
-        transform: translate(-50%, -50%) scale(1.2);
-        opacity: 1;
-        box-shadow: 0 8px 32px rgba(132, 250, 176, 0.2);
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.8;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
-}
-
-/* Border tracing animations - Top border (Inhale) */
-@keyframes traceTop {
-    0% {
-        width: 0;
-    }
-    100% {
-        width: calc(100% + 6px);
-    }
-}
-
-/* Border tracing animations - Right border (Hold after inhale) */
-@keyframes traceRight {
-    0% {
-        height: 0;
-    }
-    100% {
-        height: calc(100% + 6px);
-    }
-}
-
-/* Border tracing animations - Bottom border (Exhale) */
-@keyframes traceBottom {
-    0% {
-        width: 0;
-    }
-    100% {
-        width: calc(100% + 6px);
-    }
-}
-
-/* Border tracing animations - Left border (Hold after exhale) */
-@keyframes traceLeft {
-    0% {
-        height: 0;
-    }
-    100% {
-        height: calc(100% + 6px);
+        transform: scale(1);
+        box-shadow: 0 0 20px var(--glow);
+        border-color: rgba(180, 220, 255, 0.5);
     }
 }
 
@@ -439,10 +234,7 @@ body {
 }
 
 .timer-text {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    margin-top: 1.5rem;
     font-size: 3rem;
     font-weight: 700;
     opacity: 0;
@@ -481,7 +273,7 @@ body {
 }
 
 .btn-start {
-    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+    background: linear-gradient(135deg, #b4dcff 0%, #8fd3f4 100%);
     color: #333;
 }
 
@@ -530,7 +322,7 @@ body {
     content: "•";
     position: absolute;
     left: 0;
-    color: #84fab0;
+    color: var(--accent-solid);
     font-size: 1.5rem;
 }
 
@@ -567,14 +359,14 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(132, 250, 176, 0.1), rgba(143, 211, 244, 0.1));
+    background: linear-gradient(135deg, rgba(180, 220, 255, 0.1), rgba(143, 211, 244, 0.1));
     opacity: 0;
     transition: opacity 0.3s ease;
 }
 
 .session-card:hover {
     transform: translateY(-5px);
-    border-color: rgba(132, 250, 176, 0.5);
+    border-color: var(--glow-strong);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
@@ -591,7 +383,7 @@ body {
 .session-title {
     font-size: 1.3rem;
     margin-bottom: 0.75rem;
-    color: #84fab0;
+    color: var(--accent-solid);
     position: relative;
 }
 
@@ -645,7 +437,7 @@ body {
 
 .btn-audio:hover {
     background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(132, 250, 176, 0.5);
+    border-color: var(--glow-strong);
     transform: scale(1.05);
 }
 
@@ -740,21 +532,6 @@ body {
     .progress-info {
         flex-direction: column;
         gap: 0.5rem;
-    }
-
-    .circle-container {
-        width: 200px;
-        height: 200px;
-    }
-
-    .circle {
-        width: 200px;
-        height: 200px;
-    }
-
-    .inner-circle {
-        width: 120px;
-        height: 120px;
     }
 
     .instruction-text {
