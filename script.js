@@ -227,15 +227,11 @@ function runPhase() {
     instructionText.textContent = phase.text;
     timerText.classList.add('show');
 
-    // Remove previous classes
-    circle.className = 'circle';
-    boxTracer.className = 'box-tracer';
+    // Remove previous classes and add new ones
+    circle.className = 'circle ' + phase.class;
 
-    // Add current phase class
-    setTimeout(() => {
-        circle.classList.add(phase.class);
-        boxTracer.classList.add('active', phase.tracerClass);
-    }, 50);
+    // Keep tracer visible, just swap the trace direction
+    boxTracer.className = 'box-tracer active ' + phase.tracerClass;
 
     // Start countdown
     let timeLeft = 4;

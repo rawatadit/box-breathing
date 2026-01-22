@@ -189,12 +189,10 @@ body {
 
 @keyframes inhale {
     0% {
-        transform: scale(1);
         box-shadow: 0 0 20px var(--glow);
         border-color: rgba(180, 220, 255, 0.5);
     }
     100% {
-        transform: scale(1.08);
         box-shadow: 0 0 40px var(--glow-strong);
         border-color: var(--accent);
     }
@@ -202,20 +200,21 @@ body {
 
 @keyframes hold {
     0%, 100% {
-        transform: scale(1.08);
-        box-shadow: 0 0 40px var(--glow-strong);
+        box-shadow: 0 0 35px var(--glow-strong);
+        border-color: var(--accent);
+    }
+    50% {
+        box-shadow: 0 0 45px var(--glow-strong);
         border-color: var(--accent);
     }
 }
 
 @keyframes exhale {
     0% {
-        transform: scale(1.08);
         box-shadow: 0 0 40px var(--glow-strong);
         border-color: var(--accent);
     }
     100% {
-        transform: scale(1);
         box-shadow: 0 0 20px var(--glow);
         border-color: rgba(180, 220, 255, 0.5);
     }
