@@ -92,6 +92,21 @@ body {
     transition: all 0.5s ease;
 }
 
+/* Inner breathing box - scales with breath */
+.breath-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%) scale(0.55);
+    border-radius: 12px;
+    background: rgba(180, 220, 255, 0.15);
+    border: 2px solid rgba(180, 220, 255, 0.6);
+    box-shadow: 0 0 20px var(--glow);
+    transition: transform 0.3s ease;
+}
+
 /* Box Tracer - glowing dot that follows the breathing box edges */
 .box-tracer {
     position: absolute;
@@ -217,6 +232,59 @@ body {
     100% {
         box-shadow: 0 0 20px var(--glow);
         border-color: rgba(180, 220, 255, 0.5);
+    }
+}
+
+/* Breath box animation classes */
+.breath-box.inhale {
+    animation: breathIn 4s ease-in-out forwards;
+}
+
+.breath-box.hold-full {
+    animation: breathHoldFull 4s ease-in-out forwards;
+}
+
+.breath-box.exhale {
+    animation: breathOut 4s ease-in-out forwards;
+}
+
+.breath-box.hold-empty {
+    animation: breathHoldEmpty 4s ease-in-out forwards;
+}
+
+@keyframes breathIn {
+    0% {
+        transform: translate(-50%, -50%) scale(0.55);
+        box-shadow: 0 0 15px var(--glow);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0.78);
+        box-shadow: 0 0 30px var(--glow-strong);
+    }
+}
+
+@keyframes breathHoldFull {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(0.78);
+        box-shadow: 0 0 30px var(--glow-strong);
+    }
+}
+
+@keyframes breathOut {
+    0% {
+        transform: translate(-50%, -50%) scale(0.78);
+        box-shadow: 0 0 30px var(--glow-strong);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0.55);
+        box-shadow: 0 0 15px var(--glow);
+    }
+}
+
+@keyframes breathHoldEmpty {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(0.55);
+        box-shadow: 0 0 15px var(--glow);
     }
 }
 

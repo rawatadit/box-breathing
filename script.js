@@ -58,6 +58,7 @@ function updateAudioButton() {
 updateAudioButton();
 
 const circle = document.querySelector('.circle');
+const breathBox = document.querySelector('.breath-box');
 const boxTracer = document.querySelector('.box-tracer');
 const instructionText = document.getElementById('instruction');
 const timerText = document.getElementById('timer');
@@ -89,10 +90,10 @@ let phaseTimeout;
 let progressInterval;
 
 const phases = [
-    { name: 'Inhale', duration: 4000, class: 'inhale', text: 'Breathe In', tracerClass: 'trace-top', sound: { frequency: 600, duration: 0.2 } },
-    { name: 'Hold', duration: 4000, class: 'hold first', text: 'Hold', tracerClass: 'trace-right', sound: { frequency: 800, duration: 0.15 } },
-    { name: 'Exhale', duration: 4000, class: 'exhale', text: 'Breathe Out', tracerClass: 'trace-bottom', sound: { frequency: 500, duration: 0.2 } },
-    { name: 'Hold', duration: 4000, class: 'hold second', text: 'Hold', tracerClass: 'trace-left', sound: { frequency: 700, duration: 0.15 } }
+    { name: 'Inhale', duration: 4000, class: 'inhale', breathClass: 'inhale', text: 'Breathe In', tracerClass: 'trace-top', sound: { frequency: 600, duration: 0.2 } },
+    { name: 'Hold', duration: 4000, class: 'hold first', breathClass: 'hold-full', text: 'Hold', tracerClass: 'trace-right', sound: { frequency: 800, duration: 0.15 } },
+    { name: 'Exhale', duration: 4000, class: 'exhale', breathClass: 'exhale', text: 'Breathe Out', tracerClass: 'trace-bottom', sound: { frequency: 500, duration: 0.2 } },
+    { name: 'Hold', duration: 4000, class: 'hold second', breathClass: 'hold-empty', text: 'Hold', tracerClass: 'trace-left', sound: { frequency: 700, duration: 0.15 } }
 ];
 
 // Session Selection
@@ -180,10 +181,12 @@ function pauseBreathing() {
         clearInterval(progressInterval);
         pauseBtn.textContent = 'Resume';
         circle.style.animationPlayState = 'paused';
+        breathBox.style.animationPlayState = 'paused';
         boxTracer.style.animationPlayState = 'paused';
     } else {
         pauseBtn.textContent = 'Pause';
         circle.style.animationPlayState = 'running';
+        breathBox.style.animationPlayState = 'running';
         boxTracer.style.animationPlayState = 'running';
         progressInterval = setInterval(updateProgress, 100);
         continuePhase();
@@ -201,6 +204,7 @@ function resetBreathing() {
     clearInterval(progressInterval);
 
     circle.className = 'circle';
+    breathBox.className = 'breath-box';
     boxTracer.className = 'box-tracer';
     boxTracer.style.animationPlayState = '';
     instructionText.textContent = 'Get Ready';
@@ -229,6 +233,7 @@ function runPhase() {
 
     // Remove previous classes and add new ones
     circle.className = 'circle ' + phase.class;
+    breathBox.className = 'breath-box ' + phase.breathClass;
 
     // Keep tracer visible, just swap the trace direction
     boxTracer.className = 'box-tracer active ' + phase.tracerClass;
@@ -272,6 +277,7 @@ function continuePhase() {
 
     // Resume animations
     circle.style.animationPlayState = 'running';
+    breathBox.style.animationPlayState = 'running';
 
     // Continue countdown
     let timeLeft = currentTime;
@@ -351,6 +357,7 @@ function completeSession() {
     pauseBtn.style.display = 'none';
 
     circle.className = 'circle';
+    breathBox.className = 'breath-box';
     boxTracer.className = 'box-tracer';
 }
 
