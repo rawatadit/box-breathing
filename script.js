@@ -2,9 +2,64 @@
 const sessionSelection = document.getElementById('sessionSelection');
 const breathingInterface = document.getElementById('breathingInterface');
 const sessionCards = document.querySelectorAll('.session-card');
+const audioBtn = document.getElementById('audioBtn');
+
+// Audio setup
+let audioContext = null;
+let audioEnabled = localStorage.getItem('boxBreathingAudio') !== 'false';
+
+function initAudio() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioContext.state === 'suspended') {
+        audioContext.resume();
+    }
+}
+
+function playTing(frequency = 800, duration = 0.15) {
+    if (!audioEnabled || !audioContext) return;
+
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+
+    // Soft attack, quick decay for "ting" sound
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.01);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + duration);
+}
+
+function toggleAudio() {
+    audioEnabled = !audioEnabled;
+    localStorage.setItem('boxBreathingAudio', audioEnabled);
+    updateAudioButton();
+}
+
+function updateAudioButton() {
+    if (audioEnabled) {
+        audioBtn.classList.remove('muted');
+        audioBtn.title = 'Sound on - click to mute';
+    } else {
+        audioBtn.classList.add('muted');
+        audioBtn.title = 'Sound off - click to unmute';
+    }
+}
+
+// Initialize audio button state
+updateAudioButton();
 
 const circle = document.querySelector('.circle');
 const innerCircle = document.querySelector('.inner-circle');
+const boxTracer = document.querySelector('.box-tracer');
 const instructionText = document.getElementById('instruction');
 const timerText = document.getElementById('timer');
 const startBtn = document.getElementById('startBtn');
@@ -13,7 +68,6 @@ const resetBtn = document.getElementById('resetBtn');
 
 const cycleProgress = document.getElementById('cycleProgress');
 const timeProgress = document.getElementById('timeProgress');
-const progressCircle = document.getElementById('progressCircle');
 
 // Session configurations
 const sessions = {
@@ -36,10 +90,10 @@ let phaseTimeout;
 let progressInterval;
 
 const phases = [
-    { name: 'Inhale', duration: 4000, class: 'inhale', text: 'Breathe In' },
-    { name: 'Hold', duration: 4000, class: 'hold first', text: 'Hold' },
-    { name: 'Exhale', duration: 4000, class: 'exhale', text: 'Breathe Out' },
-    { name: 'Hold', duration: 4000, class: 'hold second', text: 'Hold' }
+    { name: 'Inhale', duration: 4000, class: 'inhale', text: 'Breathe In', tracerClass: 'trace-top', sound: { frequency: 600, duration: 0.2 } },
+    { name: 'Hold', duration: 4000, class: 'hold first', text: 'Hold', tracerClass: 'trace-right', sound: { frequency: 800, duration: 0.15 } },
+    { name: 'Exhale', duration: 4000, class: 'exhale', text: 'Breathe Out', tracerClass: 'trace-bottom', sound: { frequency: 500, duration: 0.2 } },
+    { name: 'Hold', duration: 4000, class: 'hold second', text: 'Hold', tracerClass: 'trace-left', sound: { frequency: 700, duration: 0.15 } }
 ];
 
 // Session Selection
@@ -94,6 +148,9 @@ function backToSessions() {
 function startBreathing() {
     if (isRunning && !isPaused) return;
 
+    // Initialize audio on user gesture
+    initAudio();
+
     if (isPaused) {
         isPaused = false;
         pauseBtn.textContent = 'Pause';
@@ -125,8 +182,12 @@ function pauseBreathing() {
         pauseBtn.textContent = 'Resume';
         circle.style.animationPlayState = 'paused';
         innerCircle.style.animationPlayState = 'paused';
+        boxTracer.style.animationPlayState = 'paused';
     } else {
         pauseBtn.textContent = 'Pause';
+        circle.style.animationPlayState = 'running';
+        innerCircle.style.animationPlayState = 'running';
+        boxTracer.style.animationPlayState = 'running';
         progressInterval = setInterval(updateProgress, 100);
         continuePhase();
     }
@@ -144,6 +205,8 @@ function resetBreathing() {
 
     circle.className = 'circle';
     innerCircle.className = 'inner-circle';
+    boxTracer.className = 'box-tracer';
+    boxTracer.style.animationPlayState = '';
     instructionText.textContent = 'Get Ready';
     timerText.classList.remove('show');
     timerText.textContent = '4';
@@ -154,13 +217,15 @@ function resetBreathing() {
 
     // Reset progress
     updateProgress();
-    updateProgressRing(0);
 }
 
 function runPhase() {
     if (!isRunning || isPaused) return;
 
     const phase = phases[currentPhase];
+
+    // Play phase transition sound
+    playTing(phase.sound.frequency, phase.sound.duration);
 
     // Update UI
     instructionText.textContent = phase.text;
@@ -169,11 +234,13 @@ function runPhase() {
     // Remove previous classes
     circle.className = 'circle';
     innerCircle.className = 'inner-circle';
+    boxTracer.className = 'box-tracer';
 
     // Add current phase class
     setTimeout(() => {
         circle.classList.add(phase.class);
         innerCircle.classList.add(phase.class);
+        boxTracer.classList.add('active', phase.tracerClass);
     }, 50);
 
     // Start countdown
@@ -268,26 +335,16 @@ function updateProgress() {
             const totalSec = sessionDuration % 60;
             timeProgress.textContent = `${elapsedMin}:${elapsedSec.toString().padStart(2, '0')} / ${totalMin}:${totalSec.toString().padStart(2, '0')}`;
 
-            // Update progress ring
-            const progress = (elapsed / sessionDuration) * 100;
-            updateProgressRing(Math.min(progress, 100));
         } else {
             timeProgress.textContent = `${elapsedMin}:${elapsedSec.toString().padStart(2, '0')}`;
-            updateProgressRing(0);
         }
     } else {
         const totalMin = Math.floor(sessionDuration / 60);
         const totalSec = sessionDuration % 60;
         timeProgress.textContent = totalCycles > 0 ? `0:00 / ${totalMin}:${totalSec.toString().padStart(2, '0')}` : '0:00';
-        updateProgressRing(0);
     }
 }
 
-function updateProgressRing(percentage) {
-    const circumference = 880; // 2 * π * r (where r = 140)
-    const offset = circumference - (percentage / 100) * circumference;
-    progressCircle.style.strokeDashoffset = offset;
-}
 
 function completeSession() {
     clearInterval(countdown);
@@ -306,14 +363,14 @@ function completeSession() {
 
     circle.className = 'circle';
     innerCircle.className = 'inner-circle';
-
-    updateProgressRing(100);
+    boxTracer.className = 'box-tracer';
 }
 
 // Event listeners
 startBtn.addEventListener('click', startBreathing);
 pauseBtn.addEventListener('click', pauseBreathing);
 resetBtn.addEventListener('click', backToSessions);
+audioBtn.addEventListener('click', toggleAudio);
 
 // Keyboard shortcuts (only when in breathing interface)
 document.addEventListener('keydown', (e) => {

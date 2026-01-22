@@ -80,10 +80,10 @@ body {
     width: 180px;
     height: 180px;
     border-radius: 0;
-    background: rgba(255, 255, 255, 0.1);
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2),
-                inset 0 0 40px rgba(255, 255, 255, 0.1);
+    background: rgba(132, 250, 176, 0.05);
+    border: 2px solid rgba(132, 250, 176, 0.6);
+    box-shadow: 0 0 40px rgba(132, 250, 176, 0.2),
+                inset 0 0 40px rgba(132, 250, 176, 0.05);
     transition: all 0.5s ease;
 }
 
@@ -147,6 +147,88 @@ body {
     left: -3px;
     width: 3px;
     height: 0;
+}
+
+/* Box Tracer - glowing dot that follows the breathing box edges */
+.box-tracer {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #84fab0;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #84fab0, 0 0 40px #84fab0, 0 0 60px rgba(132, 250, 176, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.box-tracer.active {
+    opacity: 1;
+}
+
+/* Tracer animation for Inhale (top edge, left to right) */
+.box-tracer.trace-top {
+    animation: tracerTop 4s linear forwards;
+}
+
+/* Tracer animation for Hold 1 (right edge, top to bottom) */
+.box-tracer.trace-right {
+    animation: tracerRight 4s linear forwards;
+}
+
+/* Tracer animation for Exhale (bottom edge, right to left) */
+.box-tracer.trace-bottom {
+    animation: tracerBottom 4s linear forwards;
+}
+
+/* Tracer animation for Hold 2 (left edge, bottom to top) */
+.box-tracer.trace-left {
+    animation: tracerLeft 4s linear forwards;
+}
+
+@keyframes tracerTop {
+    0% {
+        top: 35px;
+        left: 35px;
+    }
+    100% {
+        top: 35px;
+        left: calc(100% - 47px);
+    }
+}
+
+@keyframes tracerRight {
+    0% {
+        top: 35px;
+        left: calc(100% - 47px);
+    }
+    100% {
+        top: calc(100% - 47px);
+        left: calc(100% - 47px);
+    }
+}
+
+@keyframes tracerBottom {
+    0% {
+        top: calc(100% - 47px);
+        left: calc(100% - 47px);
+    }
+    100% {
+        top: calc(100% - 47px);
+        left: 35px;
+    }
+}
+
+@keyframes tracerLeft {
+    0% {
+        top: calc(100% - 47px);
+        left: 35px;
+    }
+    100% {
+        top: 35px;
+        left: 35px;
+    }
 }
 
 /* Animation states */
@@ -239,58 +321,68 @@ body {
 @keyframes inhale {
     0% {
         transform: translate(-50%, -50%) scale(1);
-        box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 20px rgba(132, 250, 176, 0.3);
+        border-color: rgba(132, 250, 176, 0.4);
     }
     100% {
-        transform: translate(-50%, -50%) scale(1.25);
-        box-shadow: 0 0 60px rgba(255, 255, 255, 0.4);
+        transform: translate(-50%, -50%) scale(1.15);
+        box-shadow: 0 0 50px rgba(132, 250, 176, 0.7);
+        border-color: rgba(132, 250, 176, 0.9);
     }
 }
 
 @keyframes hold {
     0%, 100% {
-        transform: translate(-50%, -50%) scale(1.25);
-        box-shadow: 0 0 60px rgba(255, 255, 255, 0.4);
+        transform: translate(-50%, -50%) scale(1.15);
+        box-shadow: 0 0 50px rgba(132, 250, 176, 0.7);
+        border-color: rgba(132, 250, 176, 0.9);
     }
 }
 
 @keyframes exhale {
     0% {
-        transform: translate(-50%, -50%) scale(1.25);
-        box-shadow: 0 0 60px rgba(255, 255, 255, 0.4);
+        transform: translate(-50%, -50%) scale(1.15);
+        box-shadow: 0 0 50px rgba(132, 250, 176, 0.7);
+        border-color: rgba(132, 250, 176, 0.9);
     }
     100% {
         transform: translate(-50%, -50%) scale(1);
-        box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+        box-shadow: 0 0 20px rgba(132, 250, 176, 0.3);
+        border-color: rgba(132, 250, 176, 0.4);
     }
 }
 
 @keyframes innerInhale {
     0% {
         transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
+        opacity: 0.8;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
     100% {
-        transform: translate(-50%, -50%) scale(1.35);
-        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+        box-shadow: 0 8px 32px rgba(132, 250, 176, 0.2);
     }
 }
 
 @keyframes innerHold {
     0%, 100% {
-        transform: translate(-50%, -50%) scale(1.35);
-        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+        box-shadow: 0 8px 32px rgba(132, 250, 176, 0.2);
     }
 }
 
 @keyframes innerExhale {
     0% {
-        transform: translate(-50%, -50%) scale(1.35);
-        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+        box-shadow: 0 8px 32px rgba(132, 250, 176, 0.2);
     }
     100% {
         transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
+        opacity: 0.8;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     }
 }
 
@@ -530,37 +622,57 @@ body {
 /* Breathing Interface Styles */
 .breathing-interface {
     animation: fadeIn 0.5s ease;
+    position: relative;
 }
 
-/* Progress Ring */
-.progress-ring {
+/* Audio Toggle Button */
+.btn-audio {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-audio:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(132, 250, 176, 0.5);
+    transform: scale(1.05);
+}
+
+.audio-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.btn-audio.muted {
+    opacity: 0.5;
+}
+
+.btn-audio.muted .audio-icon {
+    position: relative;
+}
+
+.btn-audio.muted .audio-icon::after {
+    content: '';
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    height: 300px;
-    pointer-events: none;
+    left: -2px;
+    width: calc(100% + 4px);
+    height: 2px;
+    background: rgba(255, 255, 255, 0.8);
+    transform: rotate(-45deg);
 }
 
-.progress-ring-bg {
-    fill: none;
-    stroke: rgba(255, 255, 255, 0.1);
-    stroke-width: 4;
-}
-
-.progress-ring-fill {
-    fill: none;
-    stroke: #84fab0;
-    stroke-width: 4;
-    stroke-linecap: round;
-    stroke-dasharray: 880;
-    stroke-dashoffset: 880;
-    transform: rotate(-90deg);
-    transform-origin: 50% 50%;
-    transition: stroke-dashoffset 0.3s ease;
-    filter: drop-shadow(0 0 8px rgba(132, 250, 176, 0.6));
-}
 
 /* Progress Info */
 .progress-info {
@@ -623,11 +735,6 @@ body {
 
     .session-icon {
         font-size: 2.5rem;
-    }
-
-    .progress-ring {
-        width: 250px;
-        height: 250px;
     }
 
     .progress-info {

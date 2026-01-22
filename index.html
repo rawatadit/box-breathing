@@ -62,18 +62,17 @@
 
         <!-- Breathing Interface -->
         <div id="breathingInterface" class="breathing-interface" style="display: none;">
+            <button id="audioBtn" class="btn btn-audio" title="Toggle sound">
+                <span class="audio-icon">🔔</span>
+            </button>
             <h1 class="title">Box Breathing</h1>
             <p class="subtitle">Find your calm</p>
 
             <div class="breathing-container">
-                <svg class="progress-ring" viewBox="0 0 300 300">
-                    <circle class="progress-ring-bg" cx="150" cy="150" r="140" />
-                    <circle class="progress-ring-fill" cx="150" cy="150" r="140" id="progressCircle" />
-                </svg>
-
                 <div class="circle-container">
                     <div class="circle"></div>
                     <div class="inner-circle"></div>
+                    <div class="box-tracer"></div>
                 </div>
 
                 <div class="instruction-text" id="instruction">Get Ready</div>
